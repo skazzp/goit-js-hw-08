@@ -7,20 +7,21 @@ const feedbackFormState = {
   emailInput: '',
   messageInput: '',
 };
-try {
+// try {
+if (localStorage.getItem('feedback-form-state') != null) {
   let savedFormInput = JSON.parse(localStorage.getItem('feedback-form-state'));
   email.value = savedFormInput.emailInput;
   message.value = savedFormInput.messageInput;
-} catch (error) {
-  console.log(error.name); // "SyntaxError"
-  console.log(error.message); // "Unexpected token u in JSON at position 1"
 }
+// } catch (error) {
+//   console.log(error.name); // "SyntaxError"
+//   console.log(error.message); // "Unexpected token u in JSON at position 1"
+// }
 
 feedbackForm.addEventListener('input', throttle(onFormInput, 500));
 feedbackForm.addEventListener('submit', onFormSubmit);
 
 function onFormInput(event) {
-  console.log('123');
   feedbackFormState.emailInput = email.value;
   feedbackFormState.messageInput = message.value;
   localStorage.setItem(
@@ -30,6 +31,9 @@ function onFormInput(event) {
 }
 function onFormSubmit(event) {
   event.preventDefault();
+  if (localStorage.getItem('feedback-form-state') != null) {
+    console.log(JSON.parse(localStorage.getItem('feedback-form-state')));
+  }
   localStorage.removeItem('feedback-form-state');
   event.currentTarget.reset();
 }
